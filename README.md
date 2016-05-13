@@ -1,5 +1,7 @@
 # wait-for-change
 
+[![Build Status](https://travis-ci.org/svi3c/wait-for-change.svg?branch=master)](https://travis-ci.org/svi3c/wait-for-change)
+
 This npm module can be used to wait for either a file being created or changed.
 
 # Usage
