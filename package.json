@@ -1,9 +1,12 @@
 {
   "name": "wait-for-change",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A module which waits for a file being changed or added",
   "main": "index.js",
   "bin": "./wait-for-change.js",
+  "scripts": {
+    "test": "jasmine"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/svi3c/wait-for-change.git"
@@ -18,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/svi3c/wait-for-change/issues"
   },
-  "homepage": "https://github.com/svi3c/wait-for-change#readme"
+  "homepage": "https://github.com/svi3c/wait-for-change#readme",
+  "devDependencies": {
+    "jasmine": "^2.4.1"
+  }
 }

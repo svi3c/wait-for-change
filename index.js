@@ -1,26 +1,25 @@
 var fs = require("fs");
 
-var fileExists = file =>
-  new Promise((resolve, reject) =>
-    fs.access(file, err => err ? reject(err) : resolve(file)));
-
-var waitForFileExists = file =>
-  fileExists(file)
-    .catch(() => new Promise(resolve => setTimeout(() => waitForFileExists(file), 100)));
-
-var waitForChange = file =>
-  new Promise(resolve => {
-    var watcher = fs.watch(file, (event, filename) => {
-      if(event === "change") {
-        watcher.close();
-        resolve(file);
+module.exports = (file, interval) => {
+  interval = interval || 100;
+  return new Promise(resolve => {
+    var oldStats;
+    var fileExists = true;
+    var checkFile = () => fs.stat(file, (err, stats) => {
+      if(err) {
+        fileExists = false;
+      } else {
+        if(fileExists) {
+          if(oldStats && (oldStats.ctime.getTime() !== stats.ctime.getTime() || oldStats.mtime.getTime() !== stats.mtime.getTime())) {
+            resolve(file);
+          }
+          oldStats = stats;
+        } else {
+          resolve(file);
+        }
       }
     });
+    setInterval(checkFile, interval);
+    checkFile();
   });
-
-module.exports = (file) =>
-  fileExists(file)
-    .then(
-      () => waitForChange(file),
-      () => waitForFileExists(file)
-    );
+};
