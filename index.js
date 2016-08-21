@@ -1,8 +1,7 @@
 var fs = require("fs");
 
-module.exports = (file, interval) => {
-  interval = interval || 100;
-  return new Promise(resolve => {
+var waitForSingleFileChange = (file, interval) =>
+  new Promise(resolve => {
     var oldStats;
     var fileExists = true;
     var checkFile = () => fs.stat(file, (err, stats) => {
@@ -22,4 +21,11 @@ module.exports = (file, interval) => {
     setInterval(checkFile, interval);
     checkFile();
   });
+
+module.exports = (files, interval) => {
+  if (typeof files === "string") {
+    files = [files];
+  }
+  interval = interval || 100;
+  return Promise.all(files.map(file => waitForSingleFileChange(file, interval)));
 };
