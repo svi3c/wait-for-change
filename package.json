@@ -1,6 +1,6 @@
 {
   "name": "wait-for-change",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A module which waits for a file being changed or added",
   "main": "index.js",
   "bin": "./wait-for-change.js",
