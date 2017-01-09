@@ -4,21 +4,24 @@ var waitForSingleFileChange = (file, interval) =>
   new Promise(resolve => {
     var oldStats;
     var fileExists = true;
-    var checkFile  = () => fs.stat(file, (err, stats) => {
+    var intervalHandle;
+    var checkFile = () => fs.stat(file, (err, stats) => {
       if (err) {
         fileExists = false;
       } else {
         if (fileExists) {
           if (oldStats && (oldStats.ctime.getTime() !== stats.ctime.getTime() || oldStats.mtime.getTime() !== stats.mtime.getTime())) {
+            clearInterval(intervalHandle);
             resolve(file);
           }
           oldStats = stats;
         } else {
+          clearInterval(intervalHandle);
           resolve(file);
         }
       }
     });
-    setInterval(checkFile, interval);
+    intervalHandle = setInterval(checkFile, interval);
     checkFile();
   });
 
